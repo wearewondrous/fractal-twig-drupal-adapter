@@ -1,6 +1,6 @@
 {
   "name": "fractal-twig-drupal-adapter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Twig template adapter for Fractal with Drupal 8 directives.",
   "author": "WONDROUS LLC <hello@wondrous.ch> (https://www.wearewondrous.com)",
   "license": "MIT",
