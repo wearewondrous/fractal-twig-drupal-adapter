@@ -1,0 +1,35 @@
+{
+  "name": "fractal-twig-drupal-adapter",
+  "version": "1.0.0",
+  "description": "Twig template adapter for Fractal with Drupal 8 directives.",
+  "author": "WONDROUS LLC <hello@wondrous.ch> (https://www.wearewondrous.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WondrousLLC/fractal-twig-drupal-adapter.git"
+  },
+  "homepage": "https://github.com/WondrousLLC/fractal-twig-drupal-adapter#readme",
+  "bugs": {
+    "url": "https://github.com/WondrousLLC/fractal-twig-drupal-adapter/issues"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "@frctl/fractal": "latest",
+    "lodash": "^4.15.0",
+    "query-string": "^4.3.2",
+    "twig": "^0.9.5"
+  },
+  "scripts": {
+    "release:major": "npm version major -m \"Released version %s\" && npm publish && git push --follow-tags",
+    "release:minor": "npm version minor -m \"Released version %s\" && npm publish && git push --follow-tags",
+    "release:patch": "npm version patch -m \"Released version %s\" && npm publish && git push --follow-tags"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  }
+}
