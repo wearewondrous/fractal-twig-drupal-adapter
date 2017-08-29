@@ -14,6 +14,7 @@
   },
   "main": "index.js",
   "files": [
+    "src",
     "index.js"
   ],
   "dependencies": {
