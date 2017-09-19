@@ -184,7 +184,7 @@ class TwigAdapter extends Fractal.Adapter {
 
         function AttributesObject() {
             let self = this;
-            this.classes = 'asdasd';
+            this.classes = '';
             this.attr = [];
 
             this.addClass = function(...str) {
@@ -213,7 +213,7 @@ class TwigAdapter extends Fractal.Adapter {
 
         AttributesObject.prototype.toString = function toString() {
             let attrList = [
-                this.classes ? `class="${this.classes}"`:'',
+                this.classes ? `class="${this.classes}"` : '',
                 this.attr ? this.attr.join(' ') : '',
             ];
 
