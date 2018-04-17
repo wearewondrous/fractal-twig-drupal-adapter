@@ -10,6 +10,9 @@ module.exports = function (fractal) {
         },
         url(str, obj) {
             return 'url://' + str + queryString.stringify(obj);
+        },
+        block_view(path) {
+            return this.context[path] || 'block_view returned undefined from key ' + path;
         }
     }
 
