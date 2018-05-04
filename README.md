@@ -18,8 +18,30 @@ const twig = twigAdapter({
 });
 ```
 
+## Usage
+
+This adapter allows you to use some drupal filters, functions and tags.
+
+### Supported Filters
+
+`|t` - The Drupal core translation filter. Additional parameters not supported, yet.
+
+`|field_value` - Provided by the module [drupal/twig_field_value](https://www.drupal.org/projects/twig_field_value) to use plain outputs from a field.
+
+### Supported Functions
+
+`path()` - The Drupal core path function.
+
+`url()` - The Drupal core url function.
+
+`block_view()` - Provided by the module [drupal/twig_extender](https://www.drupal.org/projects/twig_extender) to directly print a block.
+
+### Supported tags
+
+`{% trans %}` - The Drupal core translat tag.
+
 ## Creator
 
-[WONDROUS LLC](https://www.wearewondrous.com/)
+[WONDROUS Ltd](https://www.wearewondrous.com/)
 
-## [License](LICENSE)
+[MIT License](LICENSE)
