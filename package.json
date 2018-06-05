@@ -21,7 +21,7 @@
     "@frctl/fractal": "latest",
     "lodash": "^4.17.4",
     "query-string": "^5.0.0",
-    "twig": "^1.10.5"
+    "twig": "1.10.5"
   },
   "scripts": {
     "release:major": "npm version major -m \"Released version %s\" && npm publish && git push --follow-tags",
