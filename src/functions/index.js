@@ -13,6 +13,9 @@ module.exports = function (fractal) {
         },
         block_view(path) {
             return this.context[path] || 'block_view returned undefined from key ' + path;
+        },
+        active_theme_path() {
+            return '';
         }
     }
 
