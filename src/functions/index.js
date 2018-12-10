@@ -1,6 +1,7 @@
 'use strict';
 
 const queryString = require('query-string');
+const drupalAttribute = require('drupal-attribute');
 
 module.exports = function (fractal) {
 
@@ -16,6 +17,9 @@ module.exports = function (fractal) {
         },
         active_theme_path() {
             return '';
+        },
+        create_attribute(attributes) {
+            return new drupalAttribute(attributes);
         }
     }
 
