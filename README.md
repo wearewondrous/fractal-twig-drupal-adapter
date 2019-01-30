@@ -20,13 +20,27 @@ const twig = twigAdapter({
 
 ## Usage
 
-This adapter allows you to use some drupal filters, functions and tags.
+This adapter allows you to use some Drupal filters, functions and tags.
 
 ### Supported Filters
 
 `|t` - The Drupal core translation filter. Additional parameters not supported, yet.
 
 `|field_value` - Provided by the module [drupal/twig_field_value](https://www.drupal.org/projects/twig_field_value) to use plain outputs from a field.
+
+#### Add Custom Filters
+
+You have the ability to extend Twig with custom filters by adding any filter functions to the twigAdapter configuration. The name of the function will be used as the filter name. For example, to create a `|render` filter:
+
+```js
+const twig = twigAdapter({
+  filters: {
+    render(str) {
+      return str;
+    }
+  }
+});
+```
 
 ### Supported Functions
 
@@ -38,7 +52,7 @@ This adapter allows you to use some drupal filters, functions and tags.
 
 ### Supported tags
 
-`{% trans %}` - The Drupal core translat tag.
+`{% trans %}` - The Drupal core translate tag.
 
 ## Creator
 

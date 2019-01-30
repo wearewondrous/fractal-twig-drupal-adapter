@@ -265,7 +265,8 @@ module.exports = function(config) {
     config = _.defaults(config || {}, {
         pristine: false,
         handlePrefix: '@',
-        importContext: false
+        importContext: false,
+        filters: {}
     });
 
     return {
@@ -278,7 +279,7 @@ module.exports = function(config) {
                 _.each(require('./functions')(app) || {}, function(func, name){
                     Twig.extendFunction(name, func);
                 });
-                _.each(require('./filters')(app), function(filter, name){
+                _.each({ ...require('./filters')(app), ...config.filters }, function(filter, name){
                     Twig.extendFilter(name, filter);
                 });
                 _.each(require('./tests')(app), function(test, name){
