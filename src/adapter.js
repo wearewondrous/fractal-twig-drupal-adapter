@@ -88,7 +88,9 @@ class TwigAdapter extends Fractal.Adapter {
                     return attrList.join(' ');
                 };
 
-                context['attributes'] = attributes;
+                if (!config.pristine) {
+                    context['attributes'] = attributes;
+                }
 
                 if (!self._config.pristine && this.id) {
 
