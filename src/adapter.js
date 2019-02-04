@@ -244,7 +244,7 @@ class TwigAdapter extends Fractal.Adapter {
                     name: meta.self ? `${self._config.handlePrefix}${meta.self.handle}` : tplPath,
                     precompiled: str
                 });
-                resolve(template.render(context, 'test'));
+                resolve(template.render(context));
             } catch (e) {
                 reject(new Error(e));
             }
