@@ -18,7 +18,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@frctl/fractal": "latest",
+    "@frctl/fractal": "3.0.0",
     "drupal-attribute": "1.0.2",
     "lodash": "^4.17.4",
     "query-string": "^5.0.0",
