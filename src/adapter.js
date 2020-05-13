@@ -178,7 +178,6 @@ class TwigAdapter extends Fractal.Adapter {
     }
 
     render(path, str, context, meta) {
-        let attributes = new drupalAttribute();
         let self = this;
 
         meta = meta || {};
@@ -190,7 +189,7 @@ class TwigAdapter extends Fractal.Adapter {
             setEnv('_config', this._app.config(), context);
             setEnv('title_prefix', '', context);
             setEnv('title_suffix', '', context);
-            setAttribute(attributes, context);
+            preprocessAttributes(context);
 
         }
 
@@ -219,18 +218,38 @@ class TwigAdapter extends Fractal.Adapter {
             }
         }
 
-        function setAttribute(attributes, context) {
-            if (context['_attributes'] !== undefined) {
-                if (context['_attributes']['classes'] !== undefined && context['_attributes']['classes'].length > 0) {
-                    attributes.addClass(context['_attributes']['classes']);
-                }
-                Object.keys(context['_attributes']).forEach(function (attribute) {
-                    if (attribute != 'classes') {
-                        attributes.setAttribute(attribute, context['_attributes'][attribute]);
+        /**
+         * This function go though in the context object and search for _attributes key.
+         * When it finds _attribute keyed value, it convert the object into Drupal Attribute.
+         * This function is recursive.
+         *
+         * @param object context
+         */
+        function preprocessAttributes(context) {
+
+            // Go though the contexts by its keys.
+            Object.keys(context).forEach(function (context_key) {
+                if (context_key == '_attributes' && context['_attributes'] !== undefined) {
+                    let attributes = new drupalAttribute();
+
+                    // Check classes.
+                    if (context['_attributes']['classes'] !== undefined && context['_attributes']['classes'].length > 0) {
+                        attributes.addClass(context['_attributes']['classes']);
                     }
-                });
-                context['attributes'] = attributes;
-            }
+
+                    // Check other attributes.
+                    Object.keys(context['_attributes']).forEach(function (attribute) {
+                        if (attribute != 'classes') {
+                            attributes.setAttribute(attribute, context['_attributes'][attribute]);
+                        }
+                    });
+
+                    // Add the created Drupal Attribute to the context.
+                    context['attributes'] = attributes;
+                } else if (context_key.charAt(0) != '_' && typeof context[context_key] == 'object') {
+                    preprocessAttributes(context[context_key]);
+                }
+            });
         }
     }
 
