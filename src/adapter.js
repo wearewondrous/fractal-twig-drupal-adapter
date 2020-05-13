@@ -219,8 +219,9 @@ class TwigAdapter extends Fractal.Adapter {
         }
 
         /**
-         * This function go though in the context object and search for _attributes key.
-         * When it finds _attribute keyed value, it convert the object into Drupal Attribute.
+         * This function go though in the context object and search for keys,
+         * which start with the '_' character and ends with the '_attributes' string.
+         * When it finds these, it convert the related object into Drupal Attribute.
          * This function is recursive.
          *
          * @param object context
@@ -229,23 +230,23 @@ class TwigAdapter extends Fractal.Adapter {
 
             // Go though the contexts by its keys.
             Object.keys(context).forEach(function (context_key) {
-                if (context_key == '_attributes' && context['_attributes'] !== undefined) {
+                if (context_key.charAt(0) == '_' && context_key.endsWith('_attributes') && typeof context[context_key] == 'object') {
                     let attributes = new drupalAttribute();
 
                     // Check classes.
-                    if (context['_attributes']['classes'] !== undefined && context['_attributes']['classes'].length > 0) {
-                        attributes.addClass(context['_attributes']['classes']);
+                    if (context[context_key]['classes'] !== undefined && context[context_key]['classes'].length > 0) {
+                        attributes.addClass(context[context_key]['classes']);
                     }
 
                     // Check other attributes.
-                    Object.keys(context['_attributes']).forEach(function (attribute) {
+                    Object.keys(context[context_key]).forEach(function (attribute) {
                         if (attribute != 'classes') {
-                            attributes.setAttribute(attribute, context['_attributes'][attribute]);
+                            attributes.setAttribute(attribute, context[context_key][attribute]);
                         }
                     });
 
                     // Add the created Drupal Attribute to the context.
-                    context['attributes'] = attributes;
+                    context[context_key.substr(1)] = attributes;
                 } else if (context_key.charAt(0) != '_' && typeof context[context_key] == 'object') {
                     preprocessAttributes(context[context_key]);
                 }
