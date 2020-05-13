@@ -5,6 +5,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const Path = require('path');
 const utils = Fractal.utils;
+const drupalAttribute = require('drupal-attribute');
 
 class TwigAdapter extends Fractal.Adapter {
 
@@ -177,50 +178,9 @@ class TwigAdapter extends Fractal.Adapter {
     }
 
     render(path, str, context, meta) {
-        let attributes = new AttributesObject();
         let self = this;
 
         meta = meta || {};
-
-        function AttributesObject() {
-            let self = this;
-            this.classes = '';
-            this.attr = [];
-
-            this.addClass = function(...str) {
-                // console.log(str);
-                self.classes = _.flatten(str).join(' ');
-
-                return self;
-            };
-
-            this.removeClass = function(...str) {
-                // todo implement
-                // self.classes = str.join(' ');
-
-                return self;
-            };
-
-            this.setAttribute = function(attribute, value) {
-                let str = `${attribute}="${value}"`;
-
-                self.attr.push(str);
-                self.attr = _.uniq(self.attr);
-
-                return self;
-            };
-        }
-
-        AttributesObject.prototype.toString = function toString() {
-            let attrList = [
-                this.classes ? `class="${this.classes}"` : '',
-                this.attr ? this.attr.join(' ') : '',
-            ];
-
-            return attrList.join(' ');
-        };
-
-
 
         if (!this._config.pristine) {
             setEnv('_self', meta.self, context);
@@ -229,7 +189,8 @@ class TwigAdapter extends Fractal.Adapter {
             setEnv('_config', this._app.config(), context);
             setEnv('title_prefix', '', context);
             setEnv('title_suffix', '', context);
-            setEnv('attributes', attributes, context);
+            preprocessAttributes(context);
+
         }
 
         return new Promise(function(resolve, reject){
@@ -255,6 +216,26 @@ class TwigAdapter extends Fractal.Adapter {
             if (context[key] === undefined && value !== undefined) {
                 context[key] = value;
             }
+        }
+
+        /**
+         * This function go though in the context object and search for keys,
+         * which start with the '_' character and ends with the '_attributes' string.
+         * When it finds these, it convert the related object into Drupal Attribute.
+         * This function is recursive.
+         *
+         * @param context
+         */
+        function preprocessAttributes(context) {
+
+            // Go though the contexts by its keys.
+            Object.keys(context).forEach(function (context_key) {
+                if (context_key.charAt(0) === '_' && context_key.endsWith('_attributes') && typeof context[context_key] == 'object') {
+                    context[context_key.substr(1)] = new drupalAttribute(new Map(Object.entries(context[context_key])));
+                } else if (context_key.charAt(0) !== '_' && typeof context[context_key] == 'object') {
+                    preprocessAttributes(context[context_key]);
+                }
+            });
         }
     }
 
