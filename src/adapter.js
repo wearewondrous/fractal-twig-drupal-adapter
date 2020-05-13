@@ -224,30 +224,15 @@ class TwigAdapter extends Fractal.Adapter {
          * When it finds these, it convert the related object into Drupal Attribute.
          * This function is recursive.
          *
-         * @param object context
+         * @param context
          */
         function preprocessAttributes(context) {
 
             // Go though the contexts by its keys.
             Object.keys(context).forEach(function (context_key) {
-                if (context_key.charAt(0) == '_' && context_key.endsWith('_attributes') && typeof context[context_key] == 'object') {
-                    let attributes = new drupalAttribute();
-
-                    // Check classes.
-                    if (context[context_key]['classes'] !== undefined && context[context_key]['classes'].length > 0) {
-                        attributes.addClass(context[context_key]['classes']);
-                    }
-
-                    // Check other attributes.
-                    Object.keys(context[context_key]).forEach(function (attribute) {
-                        if (attribute != 'classes') {
-                            attributes.setAttribute(attribute, context[context_key][attribute]);
-                        }
-                    });
-
-                    // Add the created Drupal Attribute to the context.
-                    context[context_key.substr(1)] = attributes;
-                } else if (context_key.charAt(0) != '_' && typeof context[context_key] == 'object') {
+                if (context_key.charAt(0) === '_' && context_key.endsWith('_attributes') && typeof context[context_key] == 'object') {
+                    context[context_key.substr(1)] = new drupalAttribute(new Map(Object.entries(context[context_key])));
+                } else if (context_key.charAt(0) !== '_' && typeof context[context_key] == 'object') {
                     preprocessAttributes(context[context_key]);
                 }
             });
